@@ -1,8 +1,4 @@
 import { Prisma } from "@prisma/client";
-import {
-  PrismaClientKnownRequestError,
-  PrismaClientValidationError,
-} from "@prisma/client/runtime";
 import { mockDeep } from "jest-mock-extended";
 import HandleDefault, { ResetDefaults } from "./defaults";
 import { shallowCompare } from "./utils/shallowCompare";
@@ -129,7 +125,7 @@ const createPrismaMock = <P>(
       }
       const keys = Object.keys(orderBy);
       if (keys.length > 1) {
-        throw new PrismaClientValidationError(
+        throw new Prisma.PrismaClientValidationError(
           `Argument orderBy of needs exactly one argument, but you provided ${keys.join(
             " and "
           )}. Please choose one.`
@@ -249,19 +245,22 @@ const createPrismaMock = <P>(
                         "An operation failed because it depends on one or more records that were required but not found. {cause}";
                       const code = "P2025";
                       const clientVersion = "1.2.3";
-                      // PrismaClientKnownRequestError prototype changed in version 4.7.0
+                      // Prisma.PrismaClientKnownRequestError prototype changed in version 4.7.0
                       // from: constructor(message: string, code: string, clientVersion: string, meta?: any)
                       // to: constructor(message: string, { code, clientVersion, meta, batchRequestIdx }: KnownErrorParams)
-                      if (PrismaClientKnownRequestError.length === 2) {
+                      if (Prisma.PrismaClientKnownRequestError.length === 2) {
                         // @ts-ignore
-                        throw new PrismaClientKnownRequestError(message, {
-                          code,
-                          clientVersion,
-                        });
+                        throw new Prisma.PrismaClientKnownRequestError(
+                          message,
+                          {
+                            code,
+                            clientVersion,
+                          }
+                        );
                       }
 
                       // @ts-ignore
-                      throw new PrismaClientKnownRequestError(
+                      throw new Prisma.PrismaClientKnownRequestError(
                         message,
                         code,
                         // @ts-ignore
@@ -899,7 +898,7 @@ const createPrismaMock = <P>(
       findFirstOrThrow: (args) => {
         const found = findOne(args);
         if (!found) {
-          throw new PrismaClientKnownRequestError(
+          throw new Prisma.PrismaClientKnownRequestError(
             "An operation failed because it depends on one or more records that were required but not found. {cause}",
             "P2025",
             // @ts-ignore
