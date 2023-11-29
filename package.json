@@ -5,6 +5,7 @@
   "main": "lib/index.js",
   "repository": "https://github.com/demonsters/prisma-mock",
   "license": "MIT",
+  "type": "module",
   "types": "lib/",
   "files": [
     "lib/"
@@ -25,7 +26,7 @@
     "watch": "tsc --watch"
   },
   "peerDependencies": {
-    "@prisma/client": "^3.5.0 || ^4.7.0"
+    "@prisma/client": "^3.5.0 || ^4.7.0 || 5.6.0"
   },
   "dependencies": {}
 }
